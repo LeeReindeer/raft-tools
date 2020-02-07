@@ -77,7 +77,6 @@ public class Board extends JFrame {
     modifyButton.addActionListener(e -> {
       String path = filePathField.getText().replace("\\", "\\\\");
       GameMode gameMode = (GameMode) (comboBox.getSelectedItem());
-      System.out.println("selected: " + gameMode.name);
       if (modifyMode(gameMode, path)) {
         String mode = readMode(path);
         modeLabel.setText("当前模式：" + mode);
