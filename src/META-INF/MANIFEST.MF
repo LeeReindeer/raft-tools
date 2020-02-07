@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: swingx-1.6.1.jar material-ui-swing-1.1.1-beta.jar
+Main-Class: moe.leer.rafttools.Board
+
