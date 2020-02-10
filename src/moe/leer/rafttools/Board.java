@@ -54,17 +54,18 @@ public class Board extends JFrame {
     JPanel readPanel = new JPanel(new BorderLayout());
     JPanel modifyPanel = new JPanel(new BorderLayout());
 
-    JLabel pathLabel = new JLabel("存档路径：");
+    JLabel pathLabel = new JLabel("Path(存档路径)：");
     JTextField filePathField = new JFormattedTextField();
-    JLabel modeLabel = new JLabel("当前模式：");
-    JButton readButton = new JButton("读取");
+    pathLabel.setLabelFor(filePathField);
+    JLabel modeLabel = new JLabel("Current mode(当前模式)：");
+    JButton readButton = new JButton("Read(读取)");
     // on hover, button will change to a light gray
     MaterialUIMovement.add(readButton, MaterialColors.GRAY_100);
     readButton.addActionListener(e -> {
       String path = filePathField.getText().replace("\\", "\\\\");
       System.out.println(path);
       String mode = readMode(path);
-      modeLabel.setText("当前模式：" + mode);
+      modeLabel.setText("Current mode(当前模式)：" + mode);
 
     });
     readPanel.add(pathLabel, BorderLayout.WEST);
@@ -72,25 +73,31 @@ public class Board extends JFrame {
     readPanel.add(readButton, BorderLayout.EAST);
     readPanel.add(modeLabel, BorderLayout.SOUTH);
 
-    JButton modifyButton = new JButton("修改");
+    JButton modifyButton = new JButton("Modify(修改)");
     MaterialUIMovement.add(modifyButton, MaterialColors.GRAY_100);
     modifyButton.addActionListener(e -> {
       String path = filePathField.getText().replace("\\", "\\\\");
       GameMode gameMode = (GameMode) (comboBox.getSelectedItem());
       if (modifyMode(gameMode, path)) {
         String mode = readMode(path);
-        modeLabel.setText("当前模式：" + mode);
+        modeLabel.setText("Current mode(当前模式)：" + mode);
       } else {
-        modeLabel.setText("当前模式：" + "无效的路径或存档格式");
+        modeLabel.setText("Current mode(当前模式)：" + "无效的路径或存档格式");
       }
 
     });
     modifyPanel.add(comboBox, BorderLayout.CENTER);
     modifyPanel.add(modifyButton, BorderLayout.EAST);
-    modifyPanel.add(new JLabel("选择模式："), BorderLayout.WEST);
+    modifyPanel.add(new JLabel("Select(选择模式)："), BorderLayout.WEST);
 
+        JLabel intro = new JLabel("<html><h2>操作说明</h2>1.Raft 游戏中选择载入游戏，点击OPEN SAVE FOLDER PATH<br/>" +
+            "2.在弹出的文件管理器中进入World文件夹，再进入要修改的存档文件夹<br/>" +
+            "3.复制其路径到本程序的存档路径框框中<br/>" +
+            "4.例如：C:\\Users\\&lt;用户名&gt;\\AppData\\LocalLow\\Redbeet Interactive\\Raft\\User\\User_xxxxxxxxx\\World\\存档名" +
+            "<h2> Operation Instructions </h2> 1. Select \"Load Game\" in Raft, click OPEN SAVE FOLDER PATH <br/> 2. Enter the \"World\" folder in the pop-up explorer, and then enter the archive folder you want to modify <br/> 3. Copy its path to the box of this program above<br/> 4. For example: C:\\Users\\&lt;UserName&gt;\\AppData\\LocalLow\\Redbeet Interactive\\Raft\\User\\User_xxxxxxxxx\\World\\&lt;archive name&gt</html>",
+            SwingConstants.CENTER);
     this.getContentPane().add(readPanel, BorderLayout.NORTH);
-    this.getContentPane().add(new JLabel("<html><h2>操作说明</h2>1.Raft 游戏中选择载入游戏，点击OPEN SAVE FOLDER PATH<br/>2.在弹出的文件管理器中进入World文件夹，再进入要修改的存档文件夹<br/>3.复制其路径到本程序的存档路径框框中<br/>4.例如：C:\\Users\\&lt;用户名&gt;\\AppData\\LocalLow\\Redbeet Interactive\\Raft\\User\\User_xxxxxxxxx\\World\\存档名</html>", SwingConstants.CENTER), BorderLayout.CENTER);
+    this.getContentPane().add(intro, BorderLayout.CENTER);
     this.getContentPane().add(modifyPanel, BorderLayout.SOUTH);
 
     this.setVisible(true);
@@ -105,8 +112,8 @@ public class Board extends JFrame {
       path = path.substring(0, path.length() - 2);
       System.out.println(path);
     }
-    path = path.replace("\\\\", "\\");
-    path = path.replace("\\", "\\\\");
+    path = path.replace("\\\\", "\\"); // \\ -> \
+    path = path.replace("\\", "\\\\"); // \ ->  \\
     String archiveName = path.substring(path.lastIndexOf("\\") + 1);
     File dir = new File(path);
     String[] backups = dir.list();
